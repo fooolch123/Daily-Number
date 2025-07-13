@@ -3,8 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Trophy, Clock, Target, Download } from "lucide-react";
+import { Trophy, Clock, Target } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import DiplomaGenerator from "./DiplomaGenerator";
 
 interface GameState {
   hasPlayedToday: boolean;
@@ -99,67 +100,6 @@ const GameCard = () => {
     setGuess("");
   };
 
-  const generateCertificate = () => {
-    const canvas = document.createElement('canvas');
-    canvas.width = 800;
-    canvas.height = 600;
-    const ctx = canvas.getContext('2d');
-    
-    if (!ctx) return;
-
-    // Background
-    const gradient = ctx.createLinearGradient(0, 0, 800, 600);
-    gradient.addColorStop(0, '#0f172a');
-    gradient.addColorStop(1, '#1e293b');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 800, 600);
-
-    // Border
-    ctx.strokeStyle = '#06b6d4';
-    ctx.lineWidth = 8;
-    ctx.strokeRect(20, 20, 760, 560);
-
-    // Title
-    ctx.fillStyle = '#06b6d4';
-    ctx.font = 'bold 48px Arial';
-    ctx.textAlign = 'center';
-    ctx.fillText('Certificate of Achievement', 400, 120);
-
-    // Subtitle
-    ctx.fillStyle = '#e2e8f0';
-    ctx.font = '24px Arial';
-    ctx.fillText('Daily Number Guesser Challenge', 400, 180);
-
-    // Main text
-    ctx.font = '32px Arial';
-    ctx.fillText('This certifies that you have', 400, 280);
-    ctx.fillText('successfully guessed the mystery number', 400, 320);
-    
-    // Number
-    ctx.fillStyle = '#06b6d4';
-    ctx.font = 'bold 48px Arial';
-    ctx.fillText(gameState.targetNumber.toString(), 400, 380);
-
-    // Date
-    ctx.fillStyle = '#e2e8f0';
-    ctx.font = '20px Arial';
-    ctx.fillText(`on ${new Date().toLocaleDateString()}`, 400, 430);
-
-    // Footer
-    ctx.font = '16px Arial';
-    ctx.fillText('Number Guesser - Daily Challenge Champion', 400, 520);
-
-    // Download
-    const link = document.createElement('a');
-    link.download = `number-guesser-certificate-${new Date().toISOString().split('T')[0]}.png`;
-    link.href = canvas.toDataURL();
-    link.click();
-
-    toast({
-      title: "Certificate downloaded!",
-      description: "Your achievement certificate has been saved to your downloads.",
-    });
-  };
 
   const timeUntilNextGame = () => {
     const now = new Date();
@@ -223,10 +163,15 @@ const GameCard = () => {
                   <p className="text-lg">
                     🎉 Congratulations! You correctly guessed <span className="font-bold text-primary">{gameState.targetNumber}</span>
                   </p>
-                  <Button onClick={generateCertificate} variant="success" size="lg" className="gap-2">
-                    <Download className="h-4 w-4" />
-                    Download Certificate
-                  </Button>
+                  <DiplomaGenerator 
+                    targetNumber={gameState.targetNumber}
+                    onGenerate={() => {
+                      toast({
+                        title: "🎓 Diploma Generated!",
+                        description: "Your official certificate has been downloaded successfully!"
+                      });
+                    }}
+                  />
                 </div>
               ) : (
                 <div className="space-y-4">

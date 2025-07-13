@@ -2,6 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Trophy } from "lucide-react";
 import { useState } from "react";
+import ThemeToggle from "./ThemeToggle";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,13 +48,15 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   {item.name}
                 </Link>
               ))}
+              <ThemeToggle />
               <Button variant="default" size="sm" asChild>
                 <Link to="/">Play Now</Link>
               </Button>
             </div>
 
             {/* Mobile menu button */}
-            <div className="md:hidden">
+            <div className="md:hidden flex items-center space-x-2">
+              <ThemeToggle />
               <Button
                 variant="ghost"
                 size="icon"
@@ -140,7 +143,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 
           <div className="border-t border-border mt-8 pt-8 text-center">
             <p className="text-sm text-muted-foreground">
-              © 2024 Number Guesser. Built with love and mathematics. 🎯
+              © 2025 Number Guesser. Built with love and mathematics. 🎯
             </p>
           </div>
         </div>
